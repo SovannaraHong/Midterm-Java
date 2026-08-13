@@ -11,3 +11,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+app:
+  upload:
+    dir: ${APP_UPLOAD_DIR:uploads/products}
+    base-url: ${APP_UPLOAD_BASE_URL:/uploads/products}

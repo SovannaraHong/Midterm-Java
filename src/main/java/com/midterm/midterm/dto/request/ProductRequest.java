@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class ProductRequest {
     private String productName;
     private Integer sQty;
+    private String description;
     private BigDecimal price;
     private LocalDate expiredDate;
     private Long catId;

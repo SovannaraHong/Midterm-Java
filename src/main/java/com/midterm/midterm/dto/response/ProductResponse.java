@@ -14,10 +14,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProductResponse {
     private Long pid;
-    private String pName;
+    private String productName;
     private Integer sQty;
+    private String imageUrl;
+    private String description;
     private BigDecimal price;
     private LocalDate expiredDate;
     private Long catId;
     private String categoryName;
+    private Integer soldQty;
 }

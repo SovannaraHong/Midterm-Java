@@ -23,7 +23,13 @@ public class Product {
     private Long pid;
 
     @Column(name = "pname", nullable = false, length = 150)
-    private String pName;
+    private String productName;
+
+    @Column(name = "image_url", nullable = false, length = 150)
+    private String imageUrl;
+    @Column(name = "description", nullable = false, length = 200)
+    private String description;
+
 
     @Column(name = "sqty", nullable = false)
     private Integer sQty;
@@ -33,6 +39,10 @@ public class Product {
 
     @Column(name = "expired_date")
     private LocalDate expiredDate;
+
+    @Column(name = "sold_qty", nullable = false)
+    @Builder.Default
+    private Integer soldQty = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id", nullable = false, foreignKey = @ForeignKey(name = "fk_product_category"))

@@ -9,9 +9,12 @@ import com.midterm.midterm.exception.ResourceNotFoundException;
 import com.midterm.midterm.mappers.ProductMapper;
 import com.midterm.midterm.repository.CategoryRepository;
 import com.midterm.midterm.repository.ProductRepository;
+import com.midterm.midterm.services.FileStorageService;
 import com.midterm.midterm.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,10 +22,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
+    private final FileStorageService fileStorageService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
+    @Value("${app.upload.base-url}")
+    private String uploadBaseUrl;
 
     @Override
     public List<ProductResponse> getAll() {
@@ -46,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productMapper.toEntity(request);
         product.setCategory(category);
-
+        product.setExpiredDate(LocalDate.now().plusMonths(3));
         return productMapper.toResponse(productRepository.save(product));
     }
 
@@ -57,8 +62,7 @@ public class ProductServiceImpl implements ProductService {
 
         Category category = categoryRepository.findById(request.getCatId())
                 .orElseThrow(() -> ResourceNotFoundException.notFoundException("Category not found with id: " + request.getCatId()));
-
-        existing.setPName(request.getProductName());
+        existing.setProductName(request.getProductName());
         existing.setSQty(request.getSQty());
         existing.setPrice(request.getPrice());
         existing.setExpiredDate(request.getExpiredDate());
@@ -104,6 +108,41 @@ public class ProductServiceImpl implements ProductService {
         }
 
         product.setSQty(product.getSQty() - quantity);
+
+        product.setSoldQty(product.getSoldQty() + quantity);
+        return productMapper.toResponse(productRepository.save(product));
+    }
+
+    @Override
+    public ProductResponse getBestSeller() {
+        Product product = productRepository.findTopByOrderBySoldQtyDesc()
+                .orElseThrow(() -> ResourceNotFoundException.notFoundException("No products found"));
+        return productMapper.toResponse(product);
+    }
+
+    @Override
+    public ProductResponse getBestSellerByCategory(Long catId) {
+        if (!categoryRepository.existsById(catId)) {
+            throw ResourceNotFoundException.notFoundException("Category not found with id: " + catId);
+        }
+        Product product = productRepository.findTopByCategory_CatIdOrderBySoldQtyDesc(catId)
+                .orElseThrow(() -> ResourceNotFoundException.notFoundException("No products found in category: " + catId));
+        return productMapper.toResponse(product);
+    }
+
+    @Override
+    public ProductResponse uploadImage(Long id, MultipartFile file) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> ResourceNotFoundException.notFoundException("Product not found with id: " + id));
+
+        if (product.getImageUrl() != null && product.getImageUrl().startsWith(uploadBaseUrl)) {
+            String oldFilename = product.getImageUrl().substring(product.getImageUrl().lastIndexOf('/') + 1);
+            fileStorageService.delete(oldFilename);
+        }
+
+        String filename = fileStorageService.store(file);
+        product.setImageUrl(uploadBaseUrl + "/" + filename);
+
         return productMapper.toResponse(productRepository.save(product));
     }
 }

@@ -20,10 +20,22 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.NOT_FOUND, ex.getMessage(), req);
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentials(InvalidCredentialsException ex, HttpServletRequest req) {
+        log.warn("Login failed: {}", ex.getMessage());
+        return build(HttpStatus.UNAUTHORIZED, ex.getMessage(), req);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest req) {
         log.error("Unhandled exception", ex);
         return build(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong", req);
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicate(DuplicateResourceException ex, HttpServletRequest req) {
+        log.warn("Duplicate resource: {}", ex.getMessage());
+        return build(HttpStatus.CONFLICT, ex.getMessage(), req);
     }
 
     private ResponseEntity<ErrorResponse> build(HttpStatus status, String message, HttpServletRequest req) {

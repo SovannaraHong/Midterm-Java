@@ -8,12 +8,13 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-
     @Mapping(source = "category.catId", target = "catId")
     @Mapping(source = "category.categoryName", target = "categoryName")
+    @Mapping(source = "SQty", target = "sQty")
     ProductResponse toResponse(Product product);
 
     @Mapping(target = "category", ignore = true)
-        // category is set manually in the service (needs a repository lookup by catId)
+    @Mapping(target = "expiredDate", ignore = true)
+    @Mapping(source = "SQty", target = "sQty")
     Product toEntity(ProductRequest request);
 }

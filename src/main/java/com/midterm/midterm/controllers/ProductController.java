@@ -1,12 +1,14 @@
-package com.midterm.midterm.controllers;
+package com.midterm.midterm.controller;
 
 import com.midterm.midterm.dto.request.ProductRequest;
 import com.midterm.midterm.dto.response.ProductResponse;
 import com.midterm.midterm.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -43,21 +45,35 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    // Admin feature: expired products
     @GetMapping("/expired")
     public ResponseEntity<List<ProductResponse>> getExpiredProducts() {
         return ResponseEntity.ok(productService.getExpiredProducts());
     }
 
-    // Filter by category
     @GetMapping("/category/{catId}")
     public ResponseEntity<List<ProductResponse>> getByCategory(@PathVariable Long catId) {
         return ResponseEntity.ok(productService.getByCategory(catId));
     }
 
-    // User feature: buy - decrements stock
     @PostMapping("/{id}/buy")
     public ResponseEntity<ProductResponse> buy(@PathVariable Long id, @RequestParam int quantity) {
         return ResponseEntity.ok(productService.buy(id, quantity));
+    }
+
+    @GetMapping("/best-seller")
+    public ResponseEntity<ProductResponse> getBestSeller() {
+        return ResponseEntity.ok(productService.getBestSeller());
+    }
+
+    @GetMapping("/best-seller/category/{catId}")
+    public ResponseEntity<ProductResponse> getBestSellerByCategory(@PathVariable Long catId) {
+        return ResponseEntity.ok(productService.getBestSellerByCategory(catId));
+    }
+
+    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductResponse> uploadImage(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(productService.uploadImage(id, file));
     }
 }

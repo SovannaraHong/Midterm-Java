@@ -3,6 +3,7 @@ package com.midterm.midterm.services;
 
 import com.midterm.midterm.dto.request.ProductRequest;
 import com.midterm.midterm.dto.response.ProductResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,6 +22,11 @@ public interface ProductService {
 
     List<ProductResponse> getByCategory(Long catId);
 
-    // "Buy" - decrements stock quantity when a User purchases
     ProductResponse buy(Long id, int quantity);
+
+    ProductResponse getBestSeller();
+
+    ProductResponse getBestSellerByCategory(Long catId);
+
+    ProductResponse uploadImage(Long id, MultipartFile file);
 }
