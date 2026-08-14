@@ -14,5 +14,6 @@ public class StaffResponse {
     private Long sid;
     private String userName;
     private Role role;
+    private String imageUrl;
     // password intentionally excluded - never sent back in responses
 }

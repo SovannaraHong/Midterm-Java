@@ -1,6 +1,5 @@
 package com.midterm.midterm.services;
 
-
 import com.midterm.midterm.dto.request.ProductRequest;
 import com.midterm.midterm.dto.response.ProductResponse;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ProductService {
+
     List<ProductResponse> getAll();
 
     ProductResponse getById(Long id);
@@ -21,8 +21,6 @@ public interface ProductService {
     List<ProductResponse> getExpiredProducts();
 
     List<ProductResponse> getByCategory(Long catId);
-
-    ProductResponse buy(Long id, int quantity);
 
     ProductResponse getBestSeller();
 

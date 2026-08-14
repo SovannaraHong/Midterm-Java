@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "staff")
 @Data
@@ -29,4 +31,9 @@ public class Staff {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 20)
     private Role role;
+    @Column(name = "image_url", nullable = false, length = 150)
+    private String imageUrl;
+
+    @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
+    private List<Sale> sales;
 }
