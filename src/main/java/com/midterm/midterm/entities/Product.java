@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -25,7 +26,7 @@ public class Product {
     @Column(name = "pname", nullable = false, length = 150)
     private String productName;
 
-    @Column(name = "image_url", nullable = false, length = 150)
+    @Column(name = "image_url", nullable = true, length = 150)
     private String imageUrl;
     @Column(name = "description", nullable = false, length = 200)
     private String description;
@@ -47,4 +48,7 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id", nullable = false, foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<SaleDetail> saleDetails;
 }

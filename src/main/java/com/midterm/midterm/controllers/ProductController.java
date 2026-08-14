@@ -1,4 +1,4 @@
-package com.midterm.midterm.controller;
+package com.midterm.midterm.controllers;
 
 import com.midterm.midterm.dto.request.ProductRequest;
 import com.midterm.midterm.dto.response.ProductResponse;
@@ -55,10 +55,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.getByCategory(catId));
     }
 
-    @PostMapping("/{id}/buy")
-    public ResponseEntity<ProductResponse> buy(@PathVariable Long id, @RequestParam int quantity) {
-        return ResponseEntity.ok(productService.buy(id, quantity));
-    }
 
     @GetMapping("/best-seller")
     public ResponseEntity<ProductResponse> getBestSeller() {
