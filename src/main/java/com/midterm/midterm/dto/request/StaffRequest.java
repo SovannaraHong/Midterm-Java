@@ -14,4 +14,5 @@ public class StaffRequest {
     private String userName;
     private String password;
     private Role role;
+     private Boolean status;
 }

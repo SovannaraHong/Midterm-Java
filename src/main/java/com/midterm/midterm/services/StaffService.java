@@ -6,6 +6,8 @@ import com.midterm.midterm.dto.response.StaffResponse;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface StaffService {
     List<StaffResponse> getAll();
 
@@ -15,6 +17,6 @@ public interface StaffService {
 
     StaffResponse update(Long id, StaffRequest request);
 
-    void delete(Long id);
-
+    void delete(Long id, Long currentStaffId);
+ StaffResponse uploadImage(Long id, MultipartFile file);
 }

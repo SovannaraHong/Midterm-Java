@@ -65,6 +65,7 @@ public class ProductServiceImpl implements ProductService {
         existing.setProductName(request.getProductName());
         existing.setDescription(request.getDescription());
         existing.setSQty(request.getSQty());
+        existing.setStatus(request.getStatus());
         existing.setPrice(request.getPrice());
         if (request.getExpiredDate() != null) {
             existing.setExpiredDate(request.getExpiredDate());

@@ -1,10 +1,7 @@
 package com.midterm.midterm.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -14,11 +11,14 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"sale", "product"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class SaleDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sale_detail_id")
+    @EqualsAndHashCode.Include
     private Long saleDetailId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,4 +45,8 @@ public class SaleDetail {
 
     @Column(name = "subtotal", nullable = false, precision = 12, scale = 2)
     private BigDecimal subtotal;
+
+    @Column(name = "is_deleted", nullable = false)
+    @Builder.Default
+    private Boolean isDeleted = false;
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class Product {
 
     @Column(name = "image_url", nullable = true, length = 150)
     private String imageUrl;
+    
     @Column(name = "description", nullable = false, length = 200)
     private String description;
 
@@ -45,10 +47,19 @@ public class Product {
     @Builder.Default
     private Integer soldQty = 0;
 
+    @Column(name ="status",nullable = false)
+    @Builder.Default
+    private Boolean status=true;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id", nullable = false, foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<SaleDetail> saleDetails;
+@OneToMany(
+    mappedBy = "product",
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+)
+private List<SaleDetail> saleDetails;
 }
