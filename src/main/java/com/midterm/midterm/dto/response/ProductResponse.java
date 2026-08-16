@@ -17,6 +17,7 @@ public class ProductResponse {
     private String productName;
     private Integer sQty;
     private String imageUrl;
+    private Boolean status;
     private String description;
     private BigDecimal price;
     private LocalDate expiredDate;

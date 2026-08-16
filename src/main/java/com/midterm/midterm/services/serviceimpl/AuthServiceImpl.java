@@ -3,6 +3,7 @@ package com.midterm.midterm.services.serviceimpl;
 import com.midterm.midterm.dto.request.LoginRequest;
 import com.midterm.midterm.dto.response.LoginResponse;
 import com.midterm.midterm.entities.Staff;
+import com.midterm.midterm.exception.AccountDisabledException;
 import com.midterm.midterm.exception.InvalidCredentialsException;
 import com.midterm.midterm.repository.StaffRepository;
 import com.midterm.midterm.services.AuthService;
@@ -22,6 +23,10 @@ public class AuthServiceImpl implements AuthService {
 
         if (staff.getPassword() == null || !staff.getPassword().equals(request.getPassword())) {
             throw new InvalidCredentialsException("Invalid username or password");
+        }
+
+        if (!staff.getStatus()) {
+            throw new AccountDisabledException("This account has been deactivated. Contact an administrator.");
         }
 
         return LoginResponse.builder()

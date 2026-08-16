@@ -3,10 +3,13 @@ package com.midterm.midterm.controllers;
 import com.midterm.midterm.dto.request.StaffRequest;
 import com.midterm.midterm.dto.response.StaffResponse;
 import com.midterm.midterm.services.StaffService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,8 +41,21 @@ public class StaffController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        staffService.delete(id);
+    public ResponseEntity<Void> deleteStaff(
+            @PathVariable Long id,
+            HttpSession session
+    ) {
+        Long currentStaffId = (Long) session.getAttribute("staffId");
+
+        staffService.delete(id, currentStaffId);
+
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<StaffResponse> uploadImage(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(staffService.uploadImage(id, file));
     }
 }
