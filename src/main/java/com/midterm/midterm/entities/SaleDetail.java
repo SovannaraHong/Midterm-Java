@@ -12,13 +12,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = {"sale", "product"})
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class SaleDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sale_detail_id")
-    @EqualsAndHashCode.Include
     private Long saleDetailId;
 
     @ManyToOne(fetch = FetchType.LAZY)

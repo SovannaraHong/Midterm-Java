@@ -71,6 +71,9 @@ public class StaffServiceImpl implements StaffService {
         existing.setUserName(request.getUserName());
         existing.setRole(request.getRole());
         existing.setStatus(request.getStatus());
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+        existing.setPassword(request.getPassword()); 
+    }
         return staffMapper.toResponse(staffRepository.save(existing));
     }
 

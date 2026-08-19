@@ -13,6 +13,5 @@ public interface StaffMapper {
     StaffResponse toResponse(Staff staff);
 
     @Mapping(target = "password", ignore = true)
-        // password is hashed/set manually in the service, never mapped directly
     Staff toEntity(StaffRequest request);
 }

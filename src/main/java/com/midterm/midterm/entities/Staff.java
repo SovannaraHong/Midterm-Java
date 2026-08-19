@@ -9,19 +9,16 @@ import java.util.List;
 
 @Entity
 @Table(name = "staff")
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "sales")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Staff {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sid")
-    @EqualsAndHashCode.Include
     private Long sid;
 
     @Column(name = "username", nullable = false, unique = true, length = 50)

@@ -1,7 +1,6 @@
 package com.midterm.midterm.services;
 
 import com.midterm.midterm.dto.response.SaleDetailResponse;
-import com.midterm.midterm.entities.SaleDetail;
 
 import java.util.List;
 
